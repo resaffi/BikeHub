@@ -1,11 +1,6 @@
 require 'rubygems'
 require 'bundler'
-
+require 'uri'
 Bundler.require
-configure do
-    require 'redis'
-    uri = URI.parse(ENV["REDISCLOUD_URL"])
-    $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-end
 require './start'
 run Sinatra::Application

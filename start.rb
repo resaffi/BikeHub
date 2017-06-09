@@ -7,7 +7,8 @@ require 'sinatra'
 require 'redis'
 require 'addressable/uri'
 
-$r = Redis.new
+$r = Redis.new(url: ENV["REDIS_URL"])
+
 def request_to_json(url)
     uri = Addressable::URI.parse(url)
     response = Net::HTTP.get(uri).to_s
