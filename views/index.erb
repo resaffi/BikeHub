@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>BikeHub</title>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize.min.css"  media="screen,projection"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+     <!--Let browser know website is optimized for mobile-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="/main.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <!--    <ul id="nav-mobile" class="side-nav fixed">
+
+<li class="search">
+
+          <div class="search-wrapper card">
+            <form>
+
+                <input name="address" placeholder="Digite um endereço..." id="search"><i class="material-icons">search</i>
+              </form>
+            <div class="search-results"></div>
+          </div>
+</li>
+<li class = "result">
+    Estações mais próximas:
+</li>
+<% nearest.each do |elem| %>
+
+<li id = "endereco" class = "result">
+  <a class = "waves-effect" > <%= elem[0] %> </a>
+</li>
+ <% end %>
+
+</ul>
+<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>  -->
+<ul id="slide-out" class="side-nav fixed">
+  <li><div class="userView">
+    <div class="background">
+      <li class="search">
+
+                <div class="search-wrapper card">
+                  <form>
+
+                      <input name="address" placeholder="Digite um endereço..." id="search"><i class="material-icons">search</i>
+                    </form>
+                  <div class="search-results"></div>
+                </div>
+      </li>
+
+    </div>
+
+  </div></li>
+
+  <li><a class= "subheader" href="#!">Estações mais próximas:</a></li>
+  <li><div class="divider"></div></li>
+  <% if nearest.empty? %>
+  <li  class = "result">
+    <a> Endereço não encontrado! </a>
+  </li>
+
+  <% end %>
+  <% nearest.each do |elem| %>
+
+  <li id = "endereco" class = "result">
+    <a class = "waves-effect" > <%= elem[0] %> </a>
+  </li>
+   <% end %>
+
+</ul>
+<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a
+
+
+    <body>
+        <div id="map"></div>
+
+
+  </body>
+<script>
+
+// Initialize collapse button
+$(".button-collapse").sideNav();
+$( ".result" ).click(function() {
+  var address = $(this).text();
+  var nearest = <%= nearest %>
+  target = nearest.filter(function(elem){
+
+    return elem[0].trim() == address.trim()
+  });
+  lat = parseFloat(target[0][2][0])
+  lng = parseFloat(target[0][2][1])
+  pos = {lat:lat,lng:lng}
+  map.setCenter(pos)
+
+});
+
+function createNewMarker(map,pos,address){
+
+    var marker = new google.maps.Marker({
+        position: pos,
+        icon:"https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_directions_bike_48px-20.png",
+        map: map,
+    });
+    var infowindow = new google.maps.InfoWindow({
+        content: address
+    });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    });
+ //map.setCenter(pos)
+
+}
+function initMap() {
+    var lat = <%= lat ||= 57.009447 %>
+    var lon = <%=  long ||= -135.321 %>
+    lat_f = parseFloat(lat)
+    lng_f = parseFloat(lon)
+console.log(lat)
+console.log(lon)
+var uluru = {lat: lat_f, lng: lng_f};
+     map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: uluru
+    });
+
+    var nearest = <%= nearest %>
+    console.log(map.getCenter().lat())
+    nearest.forEach(function(elem){
+        address = elem[0]
+
+        lat_near = parseFloat(elem[2][0])
+        lng_near = parseFloat(elem[2][1])
+        var pos = {lat : lat_near, lng: lng_near}
+        createNewMarker(map,pos,address)
+
+    })
+
+    var contentString = "Sua Localização"
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+    var marker = new google.maps.Marker({
+        position: uluru,
+        map: map,
+    });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    });
+}
+
+        </script>
+
+        <script async defer
+             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuob1gghHraBim9b1F6KbZKnS8W-BEV8Y&libraries=places&callback=initMap">
+        </script>
+
+</html>
