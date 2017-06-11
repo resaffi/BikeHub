@@ -16,30 +16,7 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
-    <!--    <ul id="nav-mobile" class="side-nav fixed">
-
-<li class="search">
-
-          <div class="search-wrapper card">
-            <form>
-
-                <input name="address" placeholder="Digite um endereço..." id="search"><i class="material-icons">search</i>
-              </form>
-            <div class="search-results"></div>
-          </div>
-</li>
-<li class = "result">
-    Estações mais próximas:
-</li>
-<% nearest.each do |elem| %>
-
-<li id = "endereco" class = "result">
-  <a class = "waves-effect" > <%= elem[0] %> </a>
-</li>
- <% end %>
-
-</ul>
-<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>  -->
+    
 <ul id="slide-out" class="side-nav fixed">
   <li><div class="userView">
     <div class="background">
@@ -121,8 +98,7 @@ function initMap() {
     var lon = <%=  long ||= -135.321 %>
     lat_f = parseFloat(lat)
     lng_f = parseFloat(lon)
-console.log(lat)
-console.log(lon)
+
 var uluru = {lat: lat_f, lng: lng_f};
      map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
